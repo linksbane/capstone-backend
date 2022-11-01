@@ -30,6 +30,7 @@ class PostSchema(ma.Schema):
 
 
 post_schema = PostSchema()
+post_schema.headers['Access-Control-Allow-Origin'] = '*'
 posts_schema = PostsSchema(many=True)
 
 # Endpoint to create a new post
@@ -87,13 +88,5 @@ def post_delete(id):
 
     return "Guide was successfully deleted"
 
-@app.after_request
-def add_header(response):
-    response.headers['Access-Control-Allow-Origin'] = 'https://pmar-capstone-frontend.herokuapp.com'
-    return response
-
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-
