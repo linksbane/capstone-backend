@@ -6,11 +6,6 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-cors = CORS(app, resources={
-    r"/*": {
-        "origins": "https://pmar-capstone-frontend.herokuapp.com"
-    }
-})
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
@@ -91,6 +86,11 @@ def post_delete(id):
     db.session.commit()
 
     return "Guide was successfully deleted"
+
+@app.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = 'https://pmar-capstone-frontend.herokuapp.com'
+    return response
 
 
 if __name__ == '__main__':
