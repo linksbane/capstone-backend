@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import os
@@ -30,8 +30,14 @@ class PostSchema(ma.Schema):
 
 
 post_schema = PostSchema()
-post_schema.headers['Access-Control-Allow-Origin'] = '*'
-posts_schema = PostsSchema(many=True)
+posts_schema = PostSchema(many=True)
+
+#CORS whitelist
+@app.after_request 
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    return response
 
 # Endpoint to create a new post
 @app.route('/post', methods=["POST"])
